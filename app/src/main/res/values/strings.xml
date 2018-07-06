@@ -13,7 +13,7 @@
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>
-    <string name="forpass">Forgot Password?</string>
+    <string name="forpass"><u>Forgot Password?</u></string>
     <string name="SYL">SYlLABUS</string>
     <string name="TEXT">Welcome To Student Portal</string>
     <string name="COURSE">COURSE MATERIAL</string>
@@ -40,5 +40,11 @@
     <string name="Quiz">Quiz</string>
     <string name="Tuts">Tutorials</string>
     <string name="lst">LAST YR PAPERS</string>
-
+    <string name="title_activity_navigation_drawer">NavigationDrawer</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 </resources>
