@@ -6,13 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,10 +27,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class UploadFile extends AppCompatActivity {
     Button selectFile, upload;
@@ -86,9 +81,9 @@ public class UploadFile extends AppCompatActivity {
         progressDialog.show();
         //final String fileName = System.currentTimeMillis()+"";
         //if(name.indexOf('/')!=-1)
-          //  fileName = name.substring(name.lastIndexOf("/")+1);
+        //  fileName = name.substring(name.lastIndexOf("/")+1);
         //if(fileName.indexOf('.')!=-1)
-          //  fileName = fileName.substring(0,fileName.lastIndexOf("."));
+        //  fileName = fileName.substring(0,fileName.lastIndexOf("."));
         final String fileName = encodeName(getFileName(pdfUri));
         final String fileNameWithExtension = encodeName(fileName)+getFileName(pdfUri).substring(getFileName(pdfUri).lastIndexOf('.'))+"";
         final StorageReference storageReference=storage.getReference();
@@ -97,10 +92,35 @@ public class UploadFile extends AppCompatActivity {
                 pathToUpload=storageReference.child("Syllabus/syllabus.pdf");
                 location="Syllabus";
                 break;
-            case 2:
-                pathToUpload=storageReference.child("Course Materials").child(fileNameWithExtension);
-                location="Course Materials";
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                pathToUpload=storageReference.child("Course Materials/Chap "+(buttonTracker-9)).child(fileNameWithExtension);
+                location="Course Materials/Chap "+(buttonTracker-9);
                 break;
+            /*case 11:
+                pathToUpload=storageReference.child("Course Materials/Chap 2").child(fileNameWithExtension);
+                location="Course Materials/Chap 2";
+                break;
+            case 12:
+                pathToUpload=storageReference.child("Course Materials/Chap 3").child(fileNameWithExtension);
+                location="Course Materials/Chap 3";
+                break;
+            case 13:
+                pathToUpload=storageReference.child("Course Materials/Chap 4").child(fileNameWithExtension);
+                location="Course Materials/Chap 4";
+                break;
+            case 14:
+                pathToUpload=storageReference.child("Course Materials/Chap 5").child(fileNameWithExtension);
+                location="Course Materials/Chap 5";
+                break;
+            case 15:
+                pathToUpload=storageReference.child("Course Materials/Chap 6").child(fileNameWithExtension);
+                location="Course Materials/Chap 6";
+                break;*/
             case 4:
                 pathToUpload=storageReference.child("Easy Solutions").child(fileNameWithExtension);
                 location="Easy Solutions";
@@ -123,6 +143,10 @@ public class UploadFile extends AppCompatActivity {
                         //String url = taskSnapshot.getStorage().getDownloadUrl().toString();
                         final DatabaseReference reference;
                         reference=database.getReference().child(location);
+                        if(buttonTracker==1)
+                        {
+                            reference.setValue(null);
+                        }
                         pathToUpload.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
@@ -134,12 +158,12 @@ public class UploadFile extends AppCompatActivity {
                         reference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-/*
+                        /*
                                 if (task.isSuccessful())
                                     Toast.makeText(UploadFile.this, "File successfully uploaded!", Toast.LENGTH_SHORT).show();
                                 else
                                     Toast.makeText(UploadFile.this, "File not successfully uploaded!", Toast.LENGTH_SHORT).show();
-*/
+                        */
                             }
                         });
 
@@ -147,11 +171,11 @@ public class UploadFile extends AppCompatActivity {
 
                     }
                 }).addOnFailureListener(new OnFailureListener(){
-                    @Override
-                    public  void onFailure(@NonNull Exception e){
+            @Override
+            public  void onFailure(@NonNull Exception e){
 
-                        Toast.makeText(UploadFile.this, "File not uploaded. Please try again.", Toast.LENGTH_SHORT).show();
-                    }
+                Toast.makeText(UploadFile.this, "File not uploaded. Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
@@ -205,19 +229,6 @@ public class UploadFile extends AppCompatActivity {
             num += Integer.toHexString(name.codePointAt(i));
         }
         return num;
-    }
-    public String decodeName(String num)
-    {
-        String ans = "";
-        String s;
-        num = num.substring(2,num.length());
-        int length = num.length();
-        for(int i=0; i<length;)
-        {
-            s = num.substring(i,i+=2);
-            ans += (char)Integer.parseInt(s,16);
-        }
-        return ans;
     }
     public String getFileName(Uri uri) {
         String result = null;

@@ -1,22 +1,17 @@
 package com.example.somaiya.somaiyaclassroom;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -35,11 +30,31 @@ public class DownloadFile extends AppCompatActivity {
             case 1:
                 databaseReference = FirebaseDatabase.getInstance().getReference().child("Syllabus");
                 break;
-            case 2:
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Material");
+            case 10:
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap "+(buttonTracker-9));
                 break;
+            /*case 11:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap 2");
+                break;
+            case 12:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap 3");
+                break;
+            case 13:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap 4");
+                break;
+            case 14:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap 5");
+                break;
+            case 15:
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Course Materials/Chap 6");
+                break;*/
             case 4:
-                databaseReference = FirebaseDatabase.getInstance().getReference().child("Easy Solution");
+                databaseReference = FirebaseDatabase.getInstance().getReference().child("Easy Solutions");
                 break;
             case 5:
                 databaseReference = FirebaseDatabase.getInstance().getReference().child("Previous Years UT Papers");
@@ -54,9 +69,14 @@ public class DownloadFile extends AppCompatActivity {
                 fileName = decodeName(dataSnapshot.getKey());
                 url = dataSnapshot.getValue(String.class);
                 //url = "https" + url.substring(2);
-                //url = "http://" + dataSnapshot.getStorage().get
+                //if syllabus has more than one file present then overwrite it
+               /* if((recyclerView.getAdapter()).getItemCount()>0 && buttonTracker==1)
+                {
+                    ((MyAdapter) recyclerView.getAdapter()).contents.clear();
+                    ((MyAdapter) recyclerView.getAdapter()).urls.clear();
+                }*/
                 ((MyAdapter)recyclerView.getAdapter()).update(fileName,url);
-                Log.e("url:",url);
+                //Log.e("url:",url);
             }
 
             @Override
@@ -95,7 +115,7 @@ public class DownloadFile extends AppCompatActivity {
         for(int i=0; i<length;)
         {
             s = num.substring(i,i+=2);
-            ans += (char)Integer.parseInt(s,16);
+            ans=ans + (char)Integer.parseInt(s,16);
         }
         return ans;
     }
